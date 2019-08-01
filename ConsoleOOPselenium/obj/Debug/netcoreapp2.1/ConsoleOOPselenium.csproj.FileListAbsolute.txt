@@ -1,0 +1,11 @@
+C:\Users\gregs\Desktop\CD\ConsoleOOPselenium\ConsoleOOPselenium\bin\Debug\netcoreapp2.1\ConsoleOOPselenium.deps.json
+C:\Users\gregs\Desktop\CD\ConsoleOOPselenium\ConsoleOOPselenium\bin\Debug\netcoreapp2.1\ConsoleOOPselenium.runtimeconfig.json
+C:\Users\gregs\Desktop\CD\ConsoleOOPselenium\ConsoleOOPselenium\bin\Debug\netcoreapp2.1\ConsoleOOPselenium.runtimeconfig.dev.json
+C:\Users\gregs\Desktop\CD\ConsoleOOPselenium\ConsoleOOPselenium\bin\Debug\netcoreapp2.1\ConsoleOOPselenium.dll
+C:\Users\gregs\Desktop\CD\ConsoleOOPselenium\ConsoleOOPselenium\obj\Debug\netcoreapp2.1\ConsoleOOPselenium.csprojAssemblyReference.cache
+C:\Users\gregs\Desktop\CD\ConsoleOOPselenium\ConsoleOOPselenium\obj\Debug\netcoreapp2.1\ConsoleOOPselenium.csproj.CoreCompileInputs.cache
+C:\Users\gregs\Desktop\CD\ConsoleOOPselenium\ConsoleOOPselenium\obj\Debug\netcoreapp2.1\ConsoleOOPselenium.AssemblyInfoInputs.cache
+C:\Users\gregs\Desktop\CD\ConsoleOOPselenium\ConsoleOOPselenium\obj\Debug\netcoreapp2.1\ConsoleOOPselenium.AssemblyInfo.cs
+C:\Users\gregs\Desktop\CD\ConsoleOOPselenium\ConsoleOOPselenium\bin\Debug\netcoreapp2.1\ConsoleOOPselenium.pdb
+C:\Users\gregs\Desktop\CD\ConsoleOOPselenium\ConsoleOOPselenium\obj\Debug\netcoreapp2.1\ConsoleOOPselenium.dll
+C:\Users\gregs\Desktop\CD\ConsoleOOPselenium\ConsoleOOPselenium\obj\Debug\netcoreapp2.1\ConsoleOOPselenium.pdb
