@@ -11,6 +11,7 @@ namespace ConsoleOOPselenium
         private readonly string UserId;
         private readonly string Password;
         public ChromeDriver driver;
+        ChromeOptions options = new ChromeOptions();
 
         public Scrape(string id, string password)
         {
@@ -18,7 +19,12 @@ namespace ConsoleOOPselenium
             Password = password;
 
             driver = new ChromeDriver(@"\Users\gregs\Desktop\CD\ConsoleOOPselenium\ConsoleOOPselenium\bin\Debug\netcoreapp2.1");
-            
+
+            string location = options.BinaryLocation;
+            var session_id = driver.SessionId;
+
+            Console.WriteLine("Session Id:" + session_id);
+            Console.WriteLine("Binary Location: " + location);
         }
 
         public void LogIn()
@@ -49,6 +55,12 @@ namespace ConsoleOOPselenium
 
             IList<IWebElement> stockData = driver.FindElements(By.ClassName("simpTblRow"));
 
+            string location = options.BinaryLocation;
+            var session_id = driver.SessionId;
+
+            Console.WriteLine("Session Id:" + session_id);
+            Console.WriteLine("Binary Location: " + location);
+
             for (int i = 1; i <= count; i++)
             {
                 string symbol = driver.FindElement(By.XPath("//*[@id=\"pf-detail-table\"]/div[1]/table/tbody/tr[" + i + "]/td[1]/a")).GetAttribute("innerText");
@@ -69,9 +81,8 @@ namespace ConsoleOOPselenium
                 };
 
                 stockList.Add(eachStock);
-
-                driver.Close();
             }
+            driver.Close();
             return stockList;
         }
 
