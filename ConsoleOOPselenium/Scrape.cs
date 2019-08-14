@@ -3,10 +3,11 @@ using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 
 namespace ConsoleOOPselenium
 {
-    class Scrape
+    class Scrape : Database
     {
         private readonly string UserId;
         private readonly string Password;
@@ -19,12 +20,6 @@ namespace ConsoleOOPselenium
             Password = password;
 
             driver = new ChromeDriver(@"\Users\gregs\Desktop\CD\ConsoleOOPselenium\ConsoleOOPselenium\bin\Debug\netcoreapp2.1");
-
-            string location = options.BinaryLocation;
-            var session_id = driver.SessionId;
-
-            Console.WriteLine("Session Id:" + session_id);
-            Console.WriteLine("Binary Location: " + location);
         }
 
         public void LogIn()
@@ -41,49 +36,63 @@ namespace ConsoleOOPselenium
             driver.Navigate().GoToUrl("https://finance.yahoo.com/portfolio/p_0/view/v1");
         }
 
-        public List<StockModel> ScrapeStockData()
+        public void ScrapeStockData()
         {
+            Console.WriteLine("Begin ScrapeStockData Method");
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(100);
-
-            List<StockModel> stockList = new List<StockModel>();
 
             IWebElement list = driver.FindElement(By.TagName("tbody"));
             ReadOnlyCollection<IWebElement> items = list.FindElements(By.TagName("tr"));
             int count = items.Count;
-
             Console.WriteLine("There are " + count + " stocks in the list.");
 
-            IList<IWebElement> stockData = driver.FindElements(By.ClassName("simpTblRow"));
+            IList<IWebElement> symbol_elements = driver.FindElements(By.XPath("//*[@aria-label='Symbol']"));
+            IList<IWebElement> lastPrice_elements = driver.FindElements(By.XPath("//*[@aria-label='Last Price']"));
+            IList<IWebElement> changePercent_elements = driver.FindElements(By.XPath("//*[@aria-label='Chg %']"));
+            IList<IWebElement> volume_elements = driver.FindElements(By.XPath("//*[@aria-label='Volume']"));
+            IList<IWebElement> marketCap_elements = driver.FindElements(By.XPath("//*[@aria-label='Market Cap']"));
 
-            string location = options.BinaryLocation;
-            var session_id = driver.SessionId;
+            ScrapedData scrape = new ScrapedData(symbol_elements, lastPrice_elements, changePercent_elements,
+                                       volume_elements, marketCap_elements);
 
-            Console.WriteLine("Session Id:" + session_id);
-            Console.WriteLine("Binary Location: " + location);
-
-            for (int i = 1; i <= count; i++)
-            {
-                string symbol = driver.FindElement(By.XPath("//*[@id=\"pf-detail-table\"]/div[1]/table/tbody/tr[" + i + "]/td[1]/a")).GetAttribute("innerText");
-                string price = driver.FindElement(By.XPath("//*[@id=\"pf-detail-table\"]/div[1]/table/tbody/tr[" + i + "]/td[2]/span")).GetAttribute("innerText");
-                string pchange = driver.FindElement(By.XPath("//*[@id=\"pf-detail-table\"]/div[1]/table/tbody/tr[" + i + "]/td[4]/span")).GetAttribute("innerText");
-                string volume = driver.FindElement(By.XPath("//*[@id=\"pf-detail-table\"]/div[1]/table/tbody/tr[" + i + "]/td[7]/span")).GetAttribute("innerText");
-                string marketcap = driver.FindElement(By.XPath("//*[@id=\"pf-detail-table\"]/div[1]/table/tbody/tr[" + i + "]/td[13]/span")).GetAttribute("innerText");
-
-                Console.WriteLine("Stock Data: " + symbol + "\n" + price + "\n" + pchange + "\n" + volume + "\n" + marketcap + "\n");
-
-                StockModel eachStock = new StockModel
-                {
-                    Symbol = symbol,
-                    Price = price,
-                    PChange = pchange,
-                    Volume = volume,
-                    MarketCap = marketcap
-                };
-
-                stockList.Add(eachStock);
-            }
+            ParseScrapedData(scrape);
             driver.Close();
-            return stockList;
+        }
+
+        private static void ParseScrapedData(ScrapedData extractedData)
+        {
+            Console.WriteLine("Begin ParseScrapedData Method");
+            int stockTotal = extractedData.StockSymbols.Count;
+            Console.WriteLine("stocktotal {0}", stockTotal);
+
+            List<string> symbols = new List<string>();
+            List<double> lastPrice = new List<double>();
+            List<double> changePercent = new List<double>();
+            List<string> volume = new List<string>();
+            List<string> marketCap = new List<string>();
+
+            StockModel stock = new StockModel();
+
+            for (int i = 0; i < stockTotal; i++)
+            {
+                symbols.Insert(i, Convert.ToString(extractedData.StockSymbols[i].Text));
+                lastPrice.Insert(i, Convert.ToDouble(extractedData.StockLastPrices[i].Text));
+                char trim = '%';
+                changePercent.Insert(i, Convert.ToDouble(extractedData.StockChangePercents[i].Text.TrimEnd(trim)));
+                volume.Insert(i, Convert.ToString(extractedData.StockVolumes[i].Text));
+                marketCap.Insert(i, Convert.ToString(extractedData.StockMarketCaps[i].Text));
+
+                stock = new StockModel(symbols[i],
+                                  lastPrice[i],
+                                  changePercent[i],
+                                  volume[i],
+                                  marketCap[i]);
+
+                Console.WriteLine("{0} stock created", symbols[i]);
+
+                InsertStockHistory(stock);
+                InsertCurrentStock(stock);
+            }
         }
     }
 }

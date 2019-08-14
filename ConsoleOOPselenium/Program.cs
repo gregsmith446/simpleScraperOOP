@@ -10,8 +10,6 @@ namespace ConsoleOOPselenium
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Let's Get This Bread!");
-
             var scraper = new Scrape("gregsmith446@intracitygeeks.org", "SILICONrhode1!");
 
             scraper.LogIn();
