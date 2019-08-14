@@ -1,4 +1,4 @@
 # simpleScraperOOP
-A simple console scraper that follows OOP principles and uses selenium to retreive portfolio data.
+A console scraper written in OOP format.
 
-Rewriting the console application so that the code follows OOP principles.
+The app uses Selenium Chrome Driver to retrieve portfolio data and SQL server to insert data into 2 tables: history and current.
